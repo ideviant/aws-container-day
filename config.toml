@@ -1,0 +1,43 @@
+baseURL = "http://gotoaws.cloudguru.run/"
+ignoreFiles = [ "\\.files/README.md$",  ]
+languageCode = "en-us"
+defaultContentLanguage = "en"
+title = "AWS Container Workshop"
+theme = "hugo-theme-learn"
+uglyurls = false
+sectionPagesMenu = "main"
+relativeURLs = true
+
+[blackfriday]
+  hrefTargetBlank = true
+
+[params]
+  editURL = "https://github.com/liangfb/alispeedymigration/edit/master/content/"
+  themeVariant = "mine"
+  showVisitedLinks = false
+  author = "Han Sijie<sijie@amazon.com>"
+  description = "���δӰ�����Ǩ�Ƶ�AWS��"
+  disableSearch = false
+  disableAssetsBusting = false
+  disableShortcutsTitle = true
+  branch = "master"
+  pygmentsUseClasses = true
+  pygmentsCodeFences = true
+  pygmentsCodefencesGuessSyntax = true
+  pygmentsStyle = "tango"
+  codeRepoName = "liangfb/alispeedymigration"
+
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-github'></i> GitHub Project"
+url = "https://github.com/liangfb/alispeedymigration"
+weight = 30
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-envelope'></i> Have questions?"
+url = "https://github.com/liangfb/alispeedymigration/issues"
+weight = 40
+
+[outputs]
+home = [ "HTML", "JSON"]
+page = [ "HTML" ]
