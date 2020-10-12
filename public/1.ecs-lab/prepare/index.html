@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="lucky-money.lab798.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lucky-money.lab798.com" />
+    <meta property="og:image" content="https://lucky-money.lab798.com/images/AWS-Logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.74.2" />
+    <meta name="description" content="���δӰ�����Ǩ�Ƶ�AWS��">
+<meta name="author" content="Han Sijie&lt;sijie@amazon.com&gt;">
+
+    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="../../images/favicon.ico" type="image/x-icon" />
+
+    <title>准备实验环境 :: AWS Container Workshop</title>
+
+    
+    <link href="../../css/nucleus.css?1602490893" rel="stylesheet">
+    <link href="../../css/fontawesome-all.min.css?1602490893" rel="stylesheet">
+    <link href="../../css/hybrid.css?1602490893" rel="stylesheet">
+    <link href="../../css/featherlight.min.css?1602490893" rel="stylesheet">
+    <link href="../../css/perfect-scrollbar.min.css?1602490893" rel="stylesheet">
+    <link href="../../css/auto-complete.css?1602490893" rel="stylesheet">
+    <link href="../../css/theme.css?1602490893" rel="stylesheet">
+    <link href="../../css/hugo-theme.css?1602490893" rel="stylesheet">
+    <link href="../../css/jquery-ui.min.css?1602490893" rel="stylesheet">
+    
+      <link href="../../css/theme-mine.css?1602490893" rel="stylesheet">
+    
+
+    <script src="../../js/jquery-3.3.1.min.js?1602490893"></script>
+    <script src="../../js/jquery-ui-1.12.1.min.js?1602490893"></script>
+
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="../../1.ecs-lab/prepare/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="../../" title="Go home"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="60%" style="padding:20px 0px;"><defs><style>.cls-1{fill:#fff;}  .cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg></a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="../../js/lunr.min.js?1602490893"></script>
+<script type="text/javascript" src="../../js/auto-complete.js?1602490893"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/gotoaws.cloudguru.run\/";
+    
+</script>
+<script type="text/javascript" src="../../js/search.js?1602490893"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/1.ecs-lab/" title="Container Workshop - ECS" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="../../1.ecs-lab/">
+          Container Workshop - ECS
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/overview/" title="架构概览" class="dd-item ">
+        <a href="../../1.ecs-lab/overview/">
+        架构概览
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/prepare/" title="准备实验环境" class="dd-item active">
+        <a href="../../1.ecs-lab/prepare/">
+        准备实验环境
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step1/" title="步骤1 使用AWS CloudFormation启动ECS集群" class="dd-item ">
+        <a href="../../1.ecs-lab/step1/">
+        步骤1 使用AWS CloudFormation启动ECS集群
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step2/" title="步骤2 检查您的集群是否正在运行" class="dd-item ">
+        <a href="../../1.ecs-lab/step2/">
+        步骤2 检查您的集群是否正在运行
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step3/" title="步骤3 编写任务定义" class="dd-item ">
+        <a href="../../1.ecs-lab/step3/">
+        步骤3 编写任务定义
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step4/" title="步骤4 配置 Application Load Balancer 目标组" class="dd-item ">
+        <a href="../../1.ecs-lab/step4/">
+        步骤4 配置 Application Load Balancer 目标组
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step5/" title="步骤5 配置Application Load Balancer侦听器" class="dd-item ">
+        <a href="../../1.ecs-lab/step5/">
+        步骤5 配置Application Load Balancer侦听器
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step6/" title="步骤6 以服务的形式部署应用程序" class="dd-item ">
+        <a href="../../1.ecs-lab/step6/">
+        步骤6 以服务的形式部署应用程序
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step7/" title="步骤7 测试您的容器化应用程序" class="dd-item ">
+        <a href="../../1.ecs-lab/step7/">
+        步骤7 测试您的容器化应用程序
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/2.eks-lab/" title="Container Workshop - EKS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../2.eks-lab/">
+          Container Workshop - EKS
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step1/" title="步骤1 回到Cloud9环境中，设置默认region, 安装eksctl, kubectl工具" class="dd-item ">
+        <a href="../../2.eks-lab/step1/">
+        步骤1 回到Cloud9环境中，设置默认region, 安装eksctl, kubectl工具
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step2/" title="步骤2 创建EKS集群" class="dd-item ">
+        <a href="../../2.eks-lab/step2/">
+        步骤2 创建EKS集群
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step3/" title="步骤3 配置ALB Ingress Controller" class="dd-item ">
+        <a href="../../2.eks-lab/step3/">
+        步骤3 配置ALB Ingress Controller
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step4/" title="步骤4 部署官方的Kubernetes dashboard" class="dd-item ">
+        <a href="../../2.eks-lab/step4/">
+        步骤4 部署官方的Kubernetes dashboard
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step5/" title="步骤5 配置使用EBS CSI" class="dd-item ">
+        <a href="../../2.eks-lab/step5/">
+        步骤5 配置使用EBS CSI
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/liangfb/alispeedymigration"><i class='fab fa-github'></i> GitHub Project</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/liangfb/alispeedymigration/issues"><i class='fas fa-envelope'></i> Have questions?</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <left>
+    Built with <i class="fas fa-heart"></i> by Lab798
+
+</left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/liangfb/alispeedymigration/edit/master/content/1.ecs-lab/prepare.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='../../'>AWS Container Day</a> > <a href='../../1.ecs-lab/'>Container Workshop - ECS</a> > 准备实验环境
+          
+         
+          
+         
+          
+           
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>准备实验环境</h1>
+          
+
+        
+
+
+<h4 id="11-通过浏览器进入-httpsdashboardeventenginerun-填入12位hash-code通过eventengine-进入aws控制台">1.1 通过浏览器进入 <a href="https://dashboard.eventengine.run/">https://dashboard.eventengine.run/</a> ，填入12位hash code，通过eventengine 进入aws控制台</h4>
+<h4 id="12-通过aws-cloud9搭建服务器环境">1.2 通过AWS Cloud9搭建服务器环境</h4>
+<p>AWS Cloud9 为您提供了EC2基础设施资源并且一个可视化的编辑器。在本次实验中，您将通过Cloud9去创建一台具有公网访问权限的EC2实例，运行后续的实验。</p>
+<ul>
+<li>打开AWS管理控制台，在Service菜单栏中输入关键字Cloud9，进入Cloud9 管理页面</li>
+<li>点击Create environment,在Environment name and Description内输入 环境的名称 [username]_cloud9，点击 Next Step。</li>
+<li>保持界面上的默认配置，本次实验不需要改动任何实例环境和网路环境， 点击 Next step</li>
+<li>进入Review界面后，确认无误，点击Create Environment完成创建。此后界面会跳转到 Cloud9 的编辑器页面</li>
+</ul>
+<h4 id="13-创建-iam-角色">1.3 创建 IAM 角色</h4>
+<p>Cloud9 通常使用动态生成 IAM 的认证授权信息，但目前和 EKS IAM Authentication 不兼容，因此我们直接给 Cloud 9 EC2 实例附加一个管理员权限的 IAM 角色，并禁止掉 Cloud9 默认的动态 IAM认证授权信息：</p>
+<ul>
+<li>请新开一个页面,进入<a href="https://console.aws.amazon.com/iam/home#/roles">https://console.aws.amazon.com/iam/home#/roles</a>,选择创建角色 第一步选择 AWS service 并选择 EC2,点击下一步</li>
+<li>权限中选择 AdministratorAccess,点击下一步</li>
+<li>输入角色名字 container-admin,点击创建角色</li>
+<li>在EC2 Instances界面选择cloud9的EC2实例(名字为aws-cloud9-xxxxx),点击Actions/Instance Settings/Attach/Replace IAM Role,选择 container-admin 角色,点击Apply完成</li>
+<li>关闭cloud9临时权限，并验证角色是否生效.
+<img src="../../images/cloud9.png" alt=""></li>
+</ul>
+<p>在cloud9中打开命令行并输入:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#测试角色是否生效</span>
+aws sts get-caller-identity
+</code></pre></div><p>如果可以正常返回以下内容(包含container-admin),则表示已经正确设置角色权限</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+    <span style="color:#f92672">&#34;Account&#34;</span>: <span style="color:#e6db74">&#34;&lt;your account id, etc.11111111&gt;&#34;</span>,
+    <span style="color:#f92672">&#34;UserId&#34;</span>: <span style="color:#e6db74">&#34;AROAYVRRQ4TUEIX4VRZLN:i-0e011f5bb16f38173&#34;</span>,
+    <span style="color:#f92672">&#34;Arn&#34;</span>: <span style="color:#e6db74">&#34;arn:aws:sts:: &lt;your account id, etc.11111111&gt;:assumed-role/container-admin/i-0e011f5bb16f38173&#34;</span>
+}
+</code></pre></div><h4 id="14-下载项目">1.4 下载项目</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/awslabs/amazon-ecs-nodejs-microservices.git
+</code></pre></div><h4 id="15-预置存储库">1.5 预置存储库</h4>
+<p>创建存储库：</p>
+<ul>
+<li>导航到 Amazon ECR 控制台。</li>
+<li>在存储库页面上，选择创建存储库。</li>
+<li>在创建存储库页面上，为您的存储库输入以下名称：api。
+⚐ 注意：在标签稳定性下，保留默认设置。</li>
+<li>选择创建存储库。</li>
+</ul>
+<p>存储库创建后，将有一条确认消息同存储库地址一起显示。 存储库地址采用以下格式：[account-ID].dkr.ecr.[region].amazonaws.com/[repo-name]。[account-ID]、[region] 和 [repo-name] 将是您的设置专有的。</p>
+<p>⚐ 注意：在本教程中，您将需要存储库地址。</p>
+<h4 id="16-推送docker镜像">1.6 推送Docker镜像</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd ~/environment/amazon-ecs-nodejs-microservices/2-containerized/services/api
+</code></pre></div><p>使用终端验证 Docker 登录：</p>
+<ul>
+<li>运行 $(aws ecr get-login &ndash;no-include-email &ndash;region [your-region])。替换 [your-region]，例如：$(aws ecr get-login &ndash;no-include-email &ndash;region us-east-1)。 如果需要，请配置您的凭证。
+如果身份验证成功，您将收到确认消息：登录成功。</li>
+<li>要构建镜像，请在终端中运行以下命令：docker build -t api .
+⚐ 注意：api 后需要添加句点 (.)。</li>
+<li>构建完毕后，请标记镜像，以便将其推送到以下存储库：docker tag api:latest [account-ID].dkr.ecr.[region].amazonaws.com/api:v1
+⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。
+⚐ 专业提示：:v1 代表镜像版本。每次构建镜像时，您都应该使此版本号递增一个数字。如果您使用脚本，可以使用自动生成的数字（例如时间戳）标记镜像。这是一个最佳实践。可让您以后轻松恢复到之前的容器镜像版本。</li>
+<li>通过运行 docker push [account-id].dkr.ecr.[region].amazonaws.com/api:v1 将镜像推送到 Amazon ECR
+⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。</li>
+</ul>
+<p>如果您导航到 Amazon ECR 存储库，应该会看到镜像标记为 v1。</p>
+
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+        
+            <a class="nav nav-prev" href="../../1.ecs-lab/overview/" title="架构概览"> <i class="fas fa-chevron-left"></i></a>
+        
+        
+            <a class="nav nav-next" href="../../1.ecs-lab/step1/" title="步骤1 使用AWS CloudFormation启动ECS集群" style="margin-right: 0px;"><i class="fas fa-chevron-right"></i></a>
+        
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="../../js/clipboard.min.js?1602490893"></script>
+    <script src="../../js/perfect-scrollbar.min.js?1602490893"></script>
+    <script src="../../js/perfect-scrollbar.jquery.min.js?1602490893"></script>
+    <script src="../../js/jquery.sticky.js?1602490893"></script>
+    <script src="../../js/featherlight.min.js?1602490893"></script>
+    <script src="../../js/highlight.pack.js?1602490893"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="../../js/modernizr.custom-3.6.0.js?1602490893"></script>
+    <script src="../../js/learn.js?1602490893"></script>
+    <script src="../../js/hugo-learn.js?1602490893"></script>
+
+    <link href="../../mermaid/mermaid.css?1602490893" type="text/css" rel="stylesheet" />
+    <script src="../../mermaid/mermaid.min.js?1602490893"></script>
+    <script>
+	var config = {
+        startOnLoad:true,
+        flowchart:{
+	    curve:'basis'
+        }
+      };
+        mermaid.initialize(config);
+    </script>
+    
+
+  </body>
+</html>
+

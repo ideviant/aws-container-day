@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Container Workshop - ECS on AWS Container Workshop</title>
+    <link>http://gotoaws.cloudguru.run/1.ecs-lab/</link>
+    <description>Recent content in Container Workshop - ECS on AWS Container Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="http://gotoaws.cloudguru.run/1.ecs-lab/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>架构概览</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/overview/</guid>
+      <description>a.客户端 客户端通过端口 80 向负载均衡器发出请求。
+b.负载均衡器 负载均衡器会将请求分发给所有的可用端口。
+c.目标组 实例会在应用程序的目标组中注册。
+d.容器端口 每个容器运行一个应用程序进程，该进程会在其命名空间内将 node.js 集群父端口绑定到端口 80。
+e.使用容器封装 node.js 整体式架构 node.js 集群父端口负责将流量分发给整体式应用程序内的工作线程。虽然此架构已经使用容器进行封装，但仍然是整体式架构，因为每个容器的功能都与其余容器相同。
+什么是Amazon ECS Amazon Elastic Container Service (Amazon ECS) 是一项高度可扩展、高性能的容器管理服务，支持 Docker 容器，让您能够轻松地在 Amazon EC2 实例的托管集群上运行应用程序。 只需进行简单的 API 调用，您便可以启动和停止支持 Docker 应用程序，查询集群的完整状态，使用各种熟悉的功能，包括安全组、Elastic Load Balancing、EBS 卷和 IAM 角色。
+您可以使用 Amazon ECS 根据您的资源需求和可用性要求在您的集群中安排容器的置放。您还可以集成自己的计划程序或第三方计划程序，以满足业务或应用程序的特定要求。
+Amazon ECS 无需额外付费。您只需为您创建的用于存储和运行应用程序的 AWS 资源（例如 EC2 实例或 EBS 卷）付费。</description>
+    </item>
+    
+    <item>
+      <title>准备实验环境</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/prepare/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/prepare/</guid>
+      <description>1.1 通过浏览器进入 https://dashboard.eventengine.run/ ，填入12位hash code，通过eventengine 进入aws控制台 1.2 通过AWS Cloud9搭建服务器环境 AWS Cloud9 为您提供了EC2基础设施资源并且一个可视化的编辑器。在本次实验中，您将通过Cloud9去创建一台具有公网访问权限的EC2实例，运行后续的实验。
+ 打开AWS管理控制台，在Service菜单栏中输入关键字Cloud9，进入Cloud9 管理页面 点击Create environment,在Environment name and Description内输入 环境的名称 [username]_cloud9，点击 Next Step。 保持界面上的默认配置，本次实验不需要改动任何实例环境和网路环境， 点击 Next step 进入Review界面后，确认无误，点击Create Environment完成创建。此后界面会跳转到 Cloud9 的编辑器页面  1.3 创建 IAM 角色 Cloud9 通常使用动态生成 IAM 的认证授权信息，但目前和 EKS IAM Authentication 不兼容，因此我们直接给 Cloud 9 EC2 实例附加一个管理员权限的 IAM 角色，并禁止掉 Cloud9 默认的动态 IAM认证授权信息：
+ 请新开一个页面,进入https://console.aws.amazon.com/iam/home#/roles,选择创建角色 第一步选择 AWS service 并选择 EC2,点击下一步 权限中选择 AdministratorAccess,点击下一步 输入角色名字 container-admin,点击创建角色 在EC2 Instances界面选择cloud9的EC2实例(名字为aws-cloud9-xxxxx),点击Actions/Instance Settings/Attach/Replace IAM Role,选择 container-admin 角色,点击Apply完成 关闭cloud9临时权限，并验证角色是否生效.</description>
+    </item>
+    
+    <item>
+      <title>步骤1 使用AWS CloudFormation启动ECS集群</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/step1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/step1/</guid>
+      <description>创建一个部署在 Application Load Balancer 后面的 Amazon ECS 集群。
+  导航至 AWS CloudFormation 控制台。
+  选择创建堆栈。
+  选择Amazon S3 URL，其中Amazon S3 URL为：https://xiaoyj.s3.us-east-2.amazonaws.com/container-day/ecs.yml, 然后点击下一步。
+  输入BreakTheMonolith-Demo 作为堆栈名称。验证其他参数是否具有下列值：
+ 所需容量 = 2 实例类型 = t2.micro 大小上限 = 2    选择下一步。
+  在配置堆栈选项页面，保留默认选项，向下滚动并选择下一步。
+  在审查 BreakTheMonolith-Demo 页面上向下滚动到页面底部，选中复选框确认功能声明，并选择创建堆栈。
+  您将看到状态为 CREATE_IN_PROGRESS 的堆栈。您可以选择屏幕右上角的“刷新”按钮查看进度。此过程通常需要不到 5 分钟的时间。</description>
+    </item>
+    
+    <item>
+      <title>步骤2 检查您的集群是否正在运行</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/step2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/step2/</guid>
+      <description>导航到 Amazon ECS 控制台。 您的集群应该会显示在列表中。
+在 BreakTheMonolith-Demo 下选择集群，然后选择任务选项卡以验证没有正在运行的任务。
+选择 ECS 实例选项卡以验证有两个由 AWS CloudFormation 模板创建的 Amazon EC2 实例。 ⚐ 注意：如果您收到显示 ECS 代理已过时的消息，请选择了解详情获取更新 ECS 代理的说明。</description>
+    </item>
+    
+    <item>
+      <title>步骤3 编写任务定义</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/step3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/step3/</guid>
+      <description>从 Amazon ECS 左侧导航菜单中选择任务定义。
+  选择创建新任务定义。
+  在选择启动类型兼容性页面中，选择 EC2 选项，然后选择下一步。
+  在配置任务和容器定义页面上执行以下操作：
+  在任务定义名称字段中输入 api。
+  向下滚动至容器定义并选择添加容器。
+  在添加容器窗口中：
+ 未定义的参数可留空白或使用默认设置。 在容器名称字段中输入 api。 在映像字段中输入 [account-ID].dkr.ecr.us-east-1.amazonaws.com/api:v1 将 [account-ID] 替换为您的具体信息。请确保标签 v1 与您在模块 1 中用于标记的值一致，并推送映像。这是在上一个模块中创建的 ECR 存储库映像的 URL。 在内存限制字段，验证硬限制已选中，然后输入 256 作为值。 在端口映射下，主机端口 = 0 且容器端口 = 3000。 滚动至 ENVIRONMENT，CPU 单元 = 256。      选择添加。 返回到配置任务和容器定义页面。
+  转至页面底部，然后选择创建。
+  您的任务定义将列在控制台中。</description>
+    </item>
+    
+    <item>
+      <title>步骤4 配置 Application Load Balancer 目标组</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/step4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/step4/</guid>
+      <description>Application Load Balancer (ALB) 可让您的服务接受传入流量。ALB 会自动将流量路由到在集群上运行的容器实例（使用容器实例作为目标组）。
+查看您的 VPC 名称： 如果您不是第一次使用此 AWS 账户，则可能拥有多个 VPC。请务必使用正确的 VPC 配置您的目标组。
+ 导航到 EC2 控制台的“负载均衡器”部分。 找到名为 demo 的负载均衡器。 选中 demo 旁边的复选框以查看该负载均衡器的详细信息。 在描述选项卡中，找到 VPC 属性（格式为：vpc-xxxxxxxxxxxxxxxxx）。 **⚐ 注意：**在下一步配置 ALB 目标组时，您需要 VPC 属性。  配置 ALB 目标组
+  导航到 EC2 控制台的“目标组”部分。
+  选择创建目标组。
+  配置以下目标组参数（下方未列出的参数，请保持默认值）：
+  对于目标组名称，请输入 api。
+  对于协议，请输入 HTTP。
+  对于端口，请输入 80。
+  请选择与负载均衡器中相匹配的 VPC 值。这很可能不是您的默认 VPC。
+  访问高级运行状况检查设置，并根据需要编辑以下参数：</description>
+    </item>
+    
+    <item>
+      <title>步骤5 配置Application Load Balancer侦听器</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/step5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/step5/</guid>
+      <description>ALB 侦听器会查看指向您的 ALB 的传入连接请求。
+将侦听器添加到 ALB
+  导航到 EC2 控制台的“负载均衡器”部分。
+  选中 demo 旁边的复选框以查看该负载均衡器的详细信息。
+  选择侦听器选项卡。
+  选择添加侦听器并根据需求编辑以下参数：
+ 对于协议:端口，请选择 HTTP，并输入 80。 对于默认操作，请选择转发至，然后在目标组字段，输入 api。    选择保存。
+  </description>
+    </item>
+    
+    <item>
+      <title>步骤6 以服务的形式部署应用程序</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/step6/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/step6/</guid>
+      <description>以服务的形式将整体式架构部署到集群中。
+  导航到 Amazon ECS 控制台，然后从左侧菜单栏中选择集群。
+  选中集群 BreakTheMonolith-Demo，选择服务选项卡，然后选择创建。
+  在配置服务页面上，编辑以下参数（并保留下面未列出参数的默认值）：
+ 对于启动类型，选择 EC2。 对于服务名称，输入 api。 对于任务数量，输入 1。 选择下一步。    在配置网络页面上的负载均衡部分，选择Application Load Balancer。
+将会出现其他参数：服务 IAM 角色和负载均衡器名称。
+ 对于服务 IAM 角色，选择 BreakTheMonolith-Demo-ECSServiceRole。 对于负载均衡器名称，验证是否已选中 demo。    在将容器添加到负载均衡部分，选择添加到负载均衡器。 系统将显示标记为 api:3000 的其他信息。
+  在api:3000部分，进行以下操作：
+ 对于生产侦听器端口，选择 80:HTTP。 对于目标组名称，选择您的组：api。 选择下一步。    在设置 Auto Scaling 页面上，保留默认设置并选择下一步。
+  在审核页面上，审核设置，然后选择创建服务。
+  在创建了服务后，选择查看服务。
+  做得好！ 您现在已拥有正在运行的服务。容器可能要过 1 分钟后才能注册为运行正常，并开始接收流量。</description>
+    </item>
+    
+    <item>
+      <title>步骤7 测试您的容器化应用程序</title>
+      <link>http://gotoaws.cloudguru.run/1.ecs-lab/step7/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/1.ecs-lab/step7/</guid>
+      <description>通过检查服务能否通过互联网访问并对其执行 ping 操作来验证您的部署。
+要查找您的服务 URL，请执行以下操作：
+ 导航到 EC2 控制台的负载均衡器部分。 选择您的负载均衡器 demo。 在描述选项卡中，复制 DNS 名称并粘贴到新浏览器选项卡或窗口中。 您应该会看到一条消息：Ready to receive requests（可以接收请求了）。  **查看服务的各个部分：**node.js 应用程序会根据 URL 将流量路由到每个工作线程。要查看工作线程，只需将工作线程名称 api/[worker-name] 添加到 DNS 名称的末尾即可，如下所示：
+ http://[DNS name]/api/users http://[DNS name]/api/threads http://[DNS name]/api/posts  您还可以在 URL 的末尾添加记录编号，以细化到特定记录。例如：http://[DNS name]/api/users/2</description>
+    </item>
+    
+  </channel>
+</rss>

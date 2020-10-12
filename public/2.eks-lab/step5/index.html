@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-US" prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb#">
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta property="og:title" content="lucky-money.lab798.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lucky-money.lab798.com" />
+    <meta property="og:image" content="https://lucky-money.lab798.com/images/AWS-Logo.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.74.2" />
+    <meta name="description" content="���δӰ�����Ǩ�Ƶ�AWS��">
+<meta name="author" content="Han Sijie&lt;sijie@amazon.com&gt;">
+
+    <link rel="shortcut icon" href="../../images/favicon.ico" type="image/x-icon" />
+<link rel="icon" href="../../images/favicon.ico" type="image/x-icon" />
+
+    <title>步骤5 配置使用EBS CSI :: AWS Container Workshop</title>
+
+    
+    <link href="../../css/nucleus.css?1602490893" rel="stylesheet">
+    <link href="../../css/fontawesome-all.min.css?1602490893" rel="stylesheet">
+    <link href="../../css/hybrid.css?1602490893" rel="stylesheet">
+    <link href="../../css/featherlight.min.css?1602490893" rel="stylesheet">
+    <link href="../../css/perfect-scrollbar.min.css?1602490893" rel="stylesheet">
+    <link href="../../css/auto-complete.css?1602490893" rel="stylesheet">
+    <link href="../../css/theme.css?1602490893" rel="stylesheet">
+    <link href="../../css/hugo-theme.css?1602490893" rel="stylesheet">
+    <link href="../../css/jquery-ui.min.css?1602490893" rel="stylesheet">
+    
+      <link href="../../css/theme-mine.css?1602490893" rel="stylesheet">
+    
+
+    <script src="../../js/jquery-3.3.1.min.js?1602490893"></script>
+    <script src="../../js/jquery-ui-1.12.1.min.js?1602490893"></script>
+
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="../../2.eks-lab/step5/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a href="../../" title="Go home"><svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 30" width="60%" style="padding:20px 0px;"><defs><style>.cls-1{fill:#fff;}  .cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg></a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="../../js/lunr.min.js?1602490893"></script>
+<script type="text/javascript" src="../../js/auto-complete.js?1602490893"></script>
+<script type="text/javascript">
+    
+        var baseurl = "http:\/\/gotoaws.cloudguru.run\/";
+    
+</script>
+<script type="text/javascript" src="../../js/search.js?1602490893"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/1.ecs-lab/" title="Container Workshop - ECS" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1.ecs-lab/">
+          Container Workshop - ECS
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/overview/" title="架构概览" class="dd-item ">
+        <a href="../../1.ecs-lab/overview/">
+        架构概览
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/prepare/" title="准备实验环境" class="dd-item ">
+        <a href="../../1.ecs-lab/prepare/">
+        准备实验环境
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step1/" title="步骤1 使用AWS CloudFormation启动ECS集群" class="dd-item ">
+        <a href="../../1.ecs-lab/step1/">
+        步骤1 使用AWS CloudFormation启动ECS集群
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step2/" title="步骤2 检查您的集群是否正在运行" class="dd-item ">
+        <a href="../../1.ecs-lab/step2/">
+        步骤2 检查您的集群是否正在运行
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step3/" title="步骤3 编写任务定义" class="dd-item ">
+        <a href="../../1.ecs-lab/step3/">
+        步骤3 编写任务定义
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step4/" title="步骤4 配置 Application Load Balancer 目标组" class="dd-item ">
+        <a href="../../1.ecs-lab/step4/">
+        步骤4 配置 Application Load Balancer 目标组
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step5/" title="步骤5 配置Application Load Balancer侦听器" class="dd-item ">
+        <a href="../../1.ecs-lab/step5/">
+        步骤5 配置Application Load Balancer侦听器
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step6/" title="步骤6 以服务的形式部署应用程序" class="dd-item ">
+        <a href="../../1.ecs-lab/step6/">
+        步骤6 以服务的形式部署应用程序
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/1.ecs-lab/step7/" title="步骤7 测试您的容器化应用程序" class="dd-item ">
+        <a href="../../1.ecs-lab/step7/">
+        步骤7 测试您的容器化应用程序
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+ 
+  
+    
+    <li data-nav-id="/2.eks-lab/" title="Container Workshop - EKS" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="../../2.eks-lab/">
+          Container Workshop - EKS
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+          
+          
+        
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step1/" title="步骤1 回到Cloud9环境中，设置默认region, 安装eksctl, kubectl工具" class="dd-item ">
+        <a href="../../2.eks-lab/step1/">
+        步骤1 回到Cloud9环境中，设置默认region, 安装eksctl, kubectl工具
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step2/" title="步骤2 创建EKS集群" class="dd-item ">
+        <a href="../../2.eks-lab/step2/">
+        步骤2 创建EKS集群
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step3/" title="步骤3 配置ALB Ingress Controller" class="dd-item ">
+        <a href="../../2.eks-lab/step3/">
+        步骤3 配置ALB Ingress Controller
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step4/" title="步骤4 部署官方的Kubernetes dashboard" class="dd-item ">
+        <a href="../../2.eks-lab/step4/">
+        步骤4 部署官方的Kubernetes dashboard
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+            
+            
+
+
+ 
+  
+    
+      <li data-nav-id="/2.eks-lab/step5/" title="步骤5 配置使用EBS CSI" class="dd-item active">
+        <a href="../../2.eks-lab/step5/">
+        步骤5 配置使用EBS CSI
+        
+        </a>
+    </li>
+     
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3></h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/liangfb/alispeedymigration"><i class='fab fa-github'></i> GitHub Project</a>
+              </li>
+          
+              <li> 
+                  <a class="padding" href="https://github.com/liangfb/alispeedymigration/issues"><i class='fas fa-envelope'></i> Have questions?</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <left>
+    Built with <i class="fas fa-heart"></i> by Lab798
+
+</left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                  
+                  
+                  
+                  <div id="top-github-link">
+                    <a class="github-link" title='Edit this page' href="https://github.com/liangfb/alispeedymigration/edit/master/content/2.eks-lab/step5.md" target="blank">
+                      <i class="fas fa-code-branch"></i>
+                      <span id="top-github-link-text">Edit this page</span>
+                    </a>
+                  </div>
+                  
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='../../'>AWS Container Day</a> > <a href='../../2.eks-lab/'>Container Workshop - EKS</a> > 步骤5 配置使用EBS CSI
+          
+         
+          
+         
+          
+           
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents"></nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>步骤5 配置使用EBS CSI</h1>
+          
+
+        
+
+
+<p>5.1 创建所需要的IAM policy , EKS OIDC provider, service account</p>
+<p>5.1.1 创建所需要的IAM policy</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#下载csi driver</span>
+git clone https://github.com/kubernetes-sigs/aws-ebs-csi-driver.git
+
+<span style="color:#75715e">#下载policy</span>
+curl -sSL -o ebs-csi-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/v0.4.0/docs/example-iam-policy.json
+
+<span style="color:#75715e">#创建ebs CSI 需要的IAM策略,如果报错请检查策略是否已经存在</span>
+aws iam create-policy <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --policy-name Amazon_EBS_CSI_Driver <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --policy-document file://ebs-csi-policy.json <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --region <span style="color:#e6db74">${</span>AWS_DEFAULT_REGION<span style="color:#e6db74">}</span>
+
+
+<span style="color:#75715e">#返回示例,请记录返回的Plociy ARN</span>
+POLICY_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>aws iam list-policies --query <span style="color:#e6db74">&#39;Policies[?PolicyName==`Amazon_EBS_CSI_Driver`].Arn&#39;</span> --output text --region <span style="color:#e6db74">${</span>AWS_DEFAULT_REGION<span style="color:#e6db74">}</span><span style="color:#66d9ef">)</span>
+</code></pre></div><p>5.1.2 获取EKS工作节点的IAM role</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 注意这一步如果是多个nodegroup就会有多个role</span>
+kubectl -n kube-system describe configmap aws-auth
+
+<span style="color:#75715e"># 单个节点组</span>
+ROLE_NAME<span style="color:#f92672">=</span>&lt;Role-name-in-above-output&gt;
+aws iam attach-role-policy --policy-arn <span style="color:#e6db74">${</span>POLICY_NAME<span style="color:#e6db74">}</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>    --role-name <span style="color:#e6db74">${</span>ROLE_NAME<span style="color:#e6db74">}</span> --region <span style="color:#e6db74">${</span>AWS_DEFAULT_REGION<span style="color:#e6db74">}</span>
+
+
+</code></pre></div><p>5.1.3 部署EBS CSI 驱动到eks 集群</p>
+<p><a href="https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/ebs-csi.html">官方文档 https://docs.aws.amazon.com/zh_cn/eks/latest/userguide/ebs-csi.html</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">
+
+kubectl apply -k aws-ebs-csi-driver/deploy/kubernetes/overlays/stable
+
+<span style="color:#75715e">#验证部署是否正确</span>
+kubectl get pods -n kube-system | grep csi
+<span style="color:#75715e">#参考输出,每个节点会各自部署ebs-csi-controller和ebs-csi-node</span>
+NAME                                      READY   STATUS              RESTARTS   AGE
+ebs-csi-controller-78bc69cb98-cddl6       4/4     Running   <span style="color:#ae81ff">0</span>          4m5s
+ebs-csi-controller-78bc69cb98-ng6nx       4/4     Running   <span style="color:#ae81ff">0</span>          4m5s
+ebs-csi-node-l4m88                        3/3     Running   <span style="color:#ae81ff">0</span>          4m5s
+ebs-csi-node-z86xc                        3/3     Running   <span style="color:#ae81ff">0</span>          4m5s
+</code></pre></div><p>5.2 部署动态卷实例应用</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#specs中定义了名为app的pod，pod中定义了pvc的存储需求，拿到卷后会挂载到/data路径下，并且每隔5s向/data路径下out.txt文本文件的添加数据</span>
+kubectl apply -f aws-ebs-csi-driver/examples/kubernetes/dynamic-provisioning/specs/
+
+<span style="color:#75715e">#查看storageclass</span>
+kubectl describe storageclass ebs-sc
+
+<span style="color:#75715e">#查看示例app状态</span>
+kubectl get pods --watch
+
+kubectl get pv
+PV_NAME<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>kubectl get pv -o json | jq -r <span style="color:#e6db74">&#39;.items[0].metadata.name&#39;</span><span style="color:#66d9ef">)</span>
+kubectl describe persistentvolumes <span style="color:#e6db74">${</span>PV_NAME<span style="color:#e6db74">}</span>
+
+<span style="color:#75715e">#查看数据是否写成功</span>
+kubectl exec -it app --  tail -f  /data/out.txt
+<span style="color:#75715e"># Thu Mar 5 14:19:43 UTC 2020</span>
+<span style="color:#75715e"># Thu Mar 5 14:19:48 UTC 2020</span>
+
+<span style="color:#75715e">#删除示例程序</span>
+kubectl delete -f aws-ebs-csi-driver/examples/kubernetes/dynamic-provisioning/specs/
+</code></pre></div>
+
+<footer class=" footline" >
+	
+</footer>
+
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+        
+            <a class="nav nav-prev" href="../../2.eks-lab/step4/" title="步骤4 部署官方的Kubernetes dashboard"> <i class="fas fa-chevron-left"></i></a>
+        
+        
+            <a class="nav nav-next" href="../../2.eks-lab/step1/" title="步骤1 回到Cloud9环境中，设置默认region, 安装eksctl, kubectl工具" style="margin-right: 0px;"><i class="fas fa-chevron-right"></i></a>
+        
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="../../js/clipboard.min.js?1602490893"></script>
+    <script src="../../js/perfect-scrollbar.min.js?1602490893"></script>
+    <script src="../../js/perfect-scrollbar.jquery.min.js?1602490893"></script>
+    <script src="../../js/jquery.sticky.js?1602490893"></script>
+    <script src="../../js/featherlight.min.js?1602490893"></script>
+    <script src="../../js/highlight.pack.js?1602490893"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="../../js/modernizr.custom-3.6.0.js?1602490893"></script>
+    <script src="../../js/learn.js?1602490893"></script>
+    <script src="../../js/hugo-learn.js?1602490893"></script>
+
+    <link href="../../mermaid/mermaid.css?1602490893" type="text/css" rel="stylesheet" />
+    <script src="../../mermaid/mermaid.min.js?1602490893"></script>
+    <script>
+	var config = {
+        startOnLoad:true,
+        flowchart:{
+	    curve:'basis'
+        }
+      };
+        mermaid.initialize(config);
+    </script>
+    
+
+  </body>
+</html>
+

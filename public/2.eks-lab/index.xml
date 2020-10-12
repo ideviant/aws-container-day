@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Container Workshop - EKS on AWS Container Workshop</title>
+    <link>http://gotoaws.cloudguru.run/2.eks-lab/</link>
+    <description>Recent content in Container Workshop - EKS on AWS Container Workshop</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="http://gotoaws.cloudguru.run/2.eks-lab/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>步骤1 回到Cloud9环境中，设置默认region, 安装eksctl, kubectl工具</title>
+      <link>http://gotoaws.cloudguru.run/2.eks-lab/step1/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/2.eks-lab/step1/</guid>
+      <description>我们将在之前创建的AWS Cloud9 环境里面安装eksctl,kubectl。进入Cloud9编辑器环境后，在终端中输入以下命令,进行安装。
+#设置默认region export AWS_DEFAULT_REGION=us-east-1 echo &amp;#34;export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}&amp;#34; &amp;gt;&amp;gt; ~/.bashrc #eksctl 版本&amp;gt; v0.20.0 curl -L &amp;#34;https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz&amp;#34; | tar xz -C . sudo mv ./eksctl /usr/local/bin #kubectl &amp;gt;v1.16.0 curl -LO --silent https://storage.googleapis.com/kubernetes-release/release/`curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt`/bin/linux/amd64/kubectl chmod 775 ./kubectl sudo mv ./kubectl /usr/local/bin #安装jq sudo yum install -y jq  检查工具的版本 eksctl (版本&amp;gt;=0.20.0), kubectl(版本&amp;gt;=1.16)
+ eksctl version kubectl version </description>
+    </item>
+    
+    <item>
+      <title>步骤2 创建EKS集群</title>
+      <link>http://gotoaws.cloudguru.run/2.eks-lab/step2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/2.eks-lab/step2/</guid>
+      <description>2.1. 打开Cloud9终端管理控制台， 使用eksctl 创建EKS集群(操作需要10-15分钟),该命令同时会创建一个使用t3.small的受管节点组。(这里需要check 一下eventengine默认的ec2 limit)
+export CLUSTER_NAME=ekslab eksctl create cluster \  --name=$CLUSTER_NAME \  --version=1.16 \  --managed 注意：如果报类似于以下的错：
+[ℹ] deploying stack &amp;#34;eksctl-ekslab-cluster&amp;#34; [✖] unexpected status &amp;#34;ROLLBACK_IN_PROGRESS&amp;#34; while waiting for CloudFormation stack &amp;#34;eksctl-ekslab-cluster&amp;#34; [ℹ] fetching stack events in attempt to troubleshoot the root cause of the failure [✖] AWS::EC2::SubnetRouteTableAssociation/RouteTableAssociationPrivateUSEAST1C: CREATE_FAILED – &amp;#34;Resource creation cancelled&amp;#34; [✖] AWS::EC2::Route/PublicSubnetRoute: CREATE_FAILED – &amp;#34;Resource creation cancelled&amp;#34; [✖] AWS::EC2::SubnetRouteTableAssociation/RouteTableAssociationPublicUSEAST1E: CREATE_FAILED – &amp;#34;Resource creation cancelled&amp;#34; [✖] AWS::EC2::SubnetRouteTableAssociation/RouteTableAssociationPrivateUSEAST1E: CREATE_FAILED – &amp;#34;Resource creation cancelled&amp;#34; [✖] AWS::EC2::NatGateway/NATGateway: CREATE_FAILED – &amp;#34;Resource creation cancelled&amp;#34; [✖] AWS::EC2::SubnetRouteTableAssociation/RouteTableAssociationPublicUSEAST1C: CREATE_FAILED – &amp;#34;Resource creation cancelled&amp;#34; [✖] AWS::EKS::Cluster/ControlPlane: CREATE_FAILED – &amp;#34;Cannot create cluster &amp;#39;ekslab&amp;#39; because us-east-1e, the targeted availability zone, does not currently have sufficient capacity to support the cluster.</description>
+    </item>
+    
+    <item>
+      <title>步骤3 配置ALB Ingress Controller</title>
+      <link>http://gotoaws.cloudguru.run/2.eks-lab/step3/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/2.eks-lab/step3/</guid>
+      <description>3.1 使用ALB Ingress Controller
+参考文档
+https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
+https://aws.amazon.com/cn/blogs/opensource/kubernetes-ingress-aws-alb-ingress-controller/
+ 3.2.1 创建ALB Ingress Controller所需要的IAM policy , EKS OIDC provider, service account
+  3.2.1.1 创建EKS OIDC Provider (这个操作每个集群只需要做一次）
+ eksctl utils associate-iam-oidc-provider --cluster=${CLUSTER_NAME} --approve --region ${AWS_DEFAULT_REGION} [ℹ] eksctl version 0.24.0-rc.0 [ℹ] using region us-east-1 [ℹ] will create IAM Open ID Connect provider for cluster &amp;#34;ekslab&amp;#34; in &amp;#34;us-east-1&amp;#34; [✔] created IAM Open ID Connect provider for cluster &amp;#34;ekslab&amp;#34; in &amp;#34;us-east-1&amp;#34;  3.2.1.2 下载并创建ALB入口控制器pod所需的IAM policy</description>
+    </item>
+    
+    <item>
+      <title>步骤4 部署官方的Kubernetes dashboard</title>
+      <link>http://gotoaws.cloudguru.run/2.eks-lab/step4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/2.eks-lab/step4/</guid>
+      <description>5.1 下载配置文件
+#2.0.0rc3 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc3/aio/deploy/recommended.yaml kubectl get pods -n kube-system kubectl get services -n kube-system #通过kubectl proxy 进行访问 #由于我们部署的EKS cluster是private cluster，所以我们需要通过 proxy. Kube-proxy进行访问Dashboard kubectl proxy --port=8080 --address=&amp;#39;0.0.0.0&amp;#39; --disable-filter=true &amp;amp; #登录 #在cloud9里面选择tools -&amp;gt; preview -&amp;gt; preview run application #在URL的结尾附加：/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/，然后按回车 #获取登录的token aws eks get-token --cluster-name ${CLUSTER_NAME} --region ${AWS_DEFAULT_REGION} | jq -r &amp;#39;.status.token&amp;#39; 选择 Dashbaord 登录页面的 “Token” 单选按钮，复制上述命令的输出，粘贴，之后点击 Sign In。 #资源清理 pkill -f &amp;#39;kubectl proxy --port=8080&amp;#39; #删除dashboard kubectl delete -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-rc3/aio/deploy/recommended.yaml </description>
+    </item>
+    
+    <item>
+      <title>步骤5 配置使用EBS CSI</title>
+      <link>http://gotoaws.cloudguru.run/2.eks-lab/step5/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://gotoaws.cloudguru.run/2.eks-lab/step5/</guid>
+      <description>5.1 创建所需要的IAM policy , EKS OIDC provider, service account
+5.1.1 创建所需要的IAM policy
+#下载csi driver git clone https://github.com/kubernetes-sigs/aws-ebs-csi-driver.git #下载policy curl -sSL -o ebs-csi-policy.json https://raw.githubusercontent.com/kubernetes-sigs/aws-ebs-csi-driver/v0.4.0/docs/example-iam-policy.json #创建ebs CSI 需要的IAM策略,如果报错请检查策略是否已经存在 aws iam create-policy \  --policy-name Amazon_EBS_CSI_Driver \  --policy-document file://ebs-csi-policy.json \  --region ${AWS_DEFAULT_REGION} #返回示例,请记录返回的Plociy ARN POLICY_NAME=$(aws iam list-policies --query &amp;#39;Policies[?PolicyName==`Amazon_EBS_CSI_Driver`].Arn&amp;#39; --output text --region ${AWS_DEFAULT_REGION}) 5.1.2 获取EKS工作节点的IAM role
+# 注意这一步如果是多个nodegroup就会有多个role kubectl -n kube-system describe configmap aws-auth # 单个节点组 ROLE_NAME=&amp;lt;Role-name-in-above-output&amp;gt; aws iam attach-role-policy --policy-arn ${POLICY_NAME} \  --role-name ${ROLE_NAME} --region ${AWS_DEFAULT_REGION} 5.</description>
+    </item>
+    
+  </channel>
+</rss>
