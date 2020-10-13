@@ -10,7 +10,7 @@ weight: 12
 #### 1.2 通过AWS Cloud9搭建服务器环境
 AWS Cloud9 为您提供了EC2基础设施资源并且一个可视化的编辑器。在本次实验中，您将通过Cloud9去创建一台具有公网访问权限的EC2实例，运行后续的实验。
 - 打开AWS管理控制台，在Service菜单栏中输入关键字Cloud9，进入Cloud9 管理页面
-- 点击Create environment,在Environment name and Description内输入 环境的名称 [username]\_cloud9，点击 Next Step。
+- 点击Create environment,在Environment name and Description内输入 环境的名称 `[username]_cloud9`，点击 Next Step。
 - 保持界面上的默认配置，本次实验不需要改动任何实例环境和网路环境， 点击 Next step
 - 进入Review界面后，确认无误，点击Create Environment完成创建。此后界面会跳转到 Cloud9 的编辑器页面
 
@@ -70,14 +70,14 @@ cd ~/environment/amazon-ecs-nodejs-microservices/2-containerized/services/api
 
 使用终端验证 Docker 登录：
 
-- 运行 $(aws ecr get-login --no-include-email --region [your-region])。替换 [your-region]，例如：$(aws ecr get-login --no-include-email --region us-east-1)。 如果需要，请配置您的凭证。
+- 运行 `aws ecr get-login --no-include-email --region [your-region]`。替换 [your-region]，例如：$(aws ecr get-login --no-include-email --region us-east-1)。 如果需要，请配置您的凭证。
 如果身份验证成功，您将收到确认消息：登录成功。
-- 要构建镜像，请在终端中运行以下命令：docker build -t api .
+- 要构建镜像，请在终端中运行以下命令：`docker build -t api` .
 ⚐ 注意：api 后需要添加句点 (.)。
-- 构建完毕后，请标记镜像，以便将其推送到以下存储库：docker tag api:latest [account-ID].dkr.ecr.[region].amazonaws.com/api:v1
+- 构建完毕后，请标记镜像，以便将其推送到以下存储库：`docker tag api:latest [account-ID].dkr.ecr.[region].amazonaws.com/api:v1`
 ⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。
 ⚐ 专业提示：:v1 代表镜像版本。每次构建镜像时，您都应该使此版本号递增一个数字。如果您使用脚本，可以使用自动生成的数字（例如时间戳）标记镜像。这是一个最佳实践。可让您以后轻松恢复到之前的容器镜像版本。
-- 通过运行 docker push [account-id].dkr.ecr.[region].amazonaws.com/api:v1 将镜像推送到 Amazon ECR
+- 通过运行 `docker push [account-id].dkr.ecr.[region].amazonaws.com/api:v1` 将镜像推送到 Amazon ECR
 ⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。
 
 如果您导航到 Amazon ECR 存储库，应该会看到镜像标记为 v1。
