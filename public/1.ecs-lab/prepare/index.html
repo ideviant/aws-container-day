@@ -18,21 +18,21 @@
     <title>准备实验环境 :: AWS Container Workshop</title>
 
     
-    <link href="../../css/nucleus.css?1602490893" rel="stylesheet">
-    <link href="../../css/fontawesome-all.min.css?1602490893" rel="stylesheet">
-    <link href="../../css/hybrid.css?1602490893" rel="stylesheet">
-    <link href="../../css/featherlight.min.css?1602490893" rel="stylesheet">
-    <link href="../../css/perfect-scrollbar.min.css?1602490893" rel="stylesheet">
-    <link href="../../css/auto-complete.css?1602490893" rel="stylesheet">
-    <link href="../../css/theme.css?1602490893" rel="stylesheet">
-    <link href="../../css/hugo-theme.css?1602490893" rel="stylesheet">
-    <link href="../../css/jquery-ui.min.css?1602490893" rel="stylesheet">
+    <link href="../../css/nucleus.css?1602582194" rel="stylesheet">
+    <link href="../../css/fontawesome-all.min.css?1602582194" rel="stylesheet">
+    <link href="../../css/hybrid.css?1602582194" rel="stylesheet">
+    <link href="../../css/featherlight.min.css?1602582194" rel="stylesheet">
+    <link href="../../css/perfect-scrollbar.min.css?1602582194" rel="stylesheet">
+    <link href="../../css/auto-complete.css?1602582194" rel="stylesheet">
+    <link href="../../css/theme.css?1602582194" rel="stylesheet">
+    <link href="../../css/hugo-theme.css?1602582194" rel="stylesheet">
+    <link href="../../css/jquery-ui.min.css?1602582194" rel="stylesheet">
     
-      <link href="../../css/theme-mine.css?1602490893" rel="stylesheet">
+      <link href="../../css/theme-mine.css?1602582194" rel="stylesheet">
     
 
-    <script src="../../js/jquery-3.3.1.min.js?1602490893"></script>
-    <script src="../../js/jquery-ui-1.12.1.min.js?1602490893"></script>
+    <script src="../../js/jquery-3.3.1.min.js?1602582194"></script>
+    <script src="../../js/jquery-ui-1.12.1.min.js?1602582194"></script>
 
 
     <style type="text/css">
@@ -60,14 +60,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="../../js/lunr.min.js?1602490893"></script>
-<script type="text/javascript" src="../../js/auto-complete.js?1602490893"></script>
+<script type="text/javascript" src="../../js/lunr.min.js?1602582194"></script>
+<script type="text/javascript" src="../../js/auto-complete.js?1602582194"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/gotoaws.cloudguru.run\/";
     
 </script>
-<script type="text/javascript" src="../../js/search.js?1602490893"></script>
+<script type="text/javascript" src="../../js/search.js?1602582194"></script>
 
     
   </div>
@@ -528,7 +528,7 @@
 <p>AWS Cloud9 为您提供了EC2基础设施资源并且一个可视化的编辑器。在本次实验中，您将通过Cloud9去创建一台具有公网访问权限的EC2实例，运行后续的实验。</p>
 <ul>
 <li>打开AWS管理控制台，在Service菜单栏中输入关键字Cloud9，进入Cloud9 管理页面</li>
-<li>点击Create environment,在Environment name and Description内输入 环境的名称 [username]_cloud9，点击 Next Step。</li>
+<li>点击Create environment,在Environment name and Description内输入 环境的名称 <code>[username]_cloud9</code>，点击 Next Step。</li>
 <li>保持界面上的默认配置，本次实验不需要改动任何实例环境和网路环境， 点击 Next step</li>
 <li>进入Review界面后，确认无误，点击Create Environment完成创建。此后界面会跳转到 Cloud9 的编辑器页面</li>
 </ul>
@@ -568,14 +568,14 @@ aws sts get-caller-identity
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd ~/environment/amazon-ecs-nodejs-microservices/2-containerized/services/api
 </code></pre></div><p>使用终端验证 Docker 登录：</p>
 <ul>
-<li>运行 $(aws ecr get-login &ndash;no-include-email &ndash;region [your-region])。替换 [your-region]，例如：$(aws ecr get-login &ndash;no-include-email &ndash;region us-east-1)。 如果需要，请配置您的凭证。
+<li>运行 <code>aws ecr get-login --no-include-email --region [your-region]</code>。替换 [your-region]，例如：$(aws ecr get-login &ndash;no-include-email &ndash;region us-east-1)。 如果需要，请配置您的凭证。
 如果身份验证成功，您将收到确认消息：登录成功。</li>
-<li>要构建镜像，请在终端中运行以下命令：docker build -t api .
+<li>要构建镜像，请在终端中运行以下命令：<code>docker build -t api</code> .
 ⚐ 注意：api 后需要添加句点 (.)。</li>
-<li>构建完毕后，请标记镜像，以便将其推送到以下存储库：docker tag api:latest [account-ID].dkr.ecr.[region].amazonaws.com/api:v1
+<li>构建完毕后，请标记镜像，以便将其推送到以下存储库：<code>docker tag api:latest [account-ID].dkr.ecr.[region].amazonaws.com/api:v1</code>
 ⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。
 ⚐ 专业提示：:v1 代表镜像版本。每次构建镜像时，您都应该使此版本号递增一个数字。如果您使用脚本，可以使用自动生成的数字（例如时间戳）标记镜像。这是一个最佳实践。可让您以后轻松恢复到之前的容器镜像版本。</li>
-<li>通过运行 docker push [account-id].dkr.ecr.[region].amazonaws.com/api:v1 将镜像推送到 Amazon ECR
+<li>通过运行 <code>docker push [account-id].dkr.ecr.[region].amazonaws.com/api:v1</code> 将镜像推送到 Amazon ECR
 ⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。</li>
 </ul>
 <p>如果您导航到 Amazon ECR 存储库，应该会看到镜像标记为 v1。</p>
@@ -895,19 +895,19 @@ aws sts get-caller-identity
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="../../js/clipboard.min.js?1602490893"></script>
-    <script src="../../js/perfect-scrollbar.min.js?1602490893"></script>
-    <script src="../../js/perfect-scrollbar.jquery.min.js?1602490893"></script>
-    <script src="../../js/jquery.sticky.js?1602490893"></script>
-    <script src="../../js/featherlight.min.js?1602490893"></script>
-    <script src="../../js/highlight.pack.js?1602490893"></script>
+    <script src="../../js/clipboard.min.js?1602582194"></script>
+    <script src="../../js/perfect-scrollbar.min.js?1602582194"></script>
+    <script src="../../js/perfect-scrollbar.jquery.min.js?1602582194"></script>
+    <script src="../../js/jquery.sticky.js?1602582194"></script>
+    <script src="../../js/featherlight.min.js?1602582194"></script>
+    <script src="../../js/highlight.pack.js?1602582194"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="../../js/modernizr.custom-3.6.0.js?1602490893"></script>
-    <script src="../../js/learn.js?1602490893"></script>
-    <script src="../../js/hugo-learn.js?1602490893"></script>
+    <script src="../../js/modernizr.custom-3.6.0.js?1602582194"></script>
+    <script src="../../js/learn.js?1602582194"></script>
+    <script src="../../js/hugo-learn.js?1602582194"></script>
 
-    <link href="../../mermaid/mermaid.css?1602490893" type="text/css" rel="stylesheet" />
-    <script src="../../mermaid/mermaid.min.js?1602490893"></script>
+    <link href="../../mermaid/mermaid.css?1602582194" type="text/css" rel="stylesheet" />
+    <script src="../../mermaid/mermaid.min.js?1602582194"></script>
     <script>
 	var config = {
         startOnLoad:true,
