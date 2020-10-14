@@ -47,11 +47,10 @@ Amazon ECS 无需额外付费。您只需为您创建的用于存储和运行应
   导航至 AWS CloudFormation 控制台。
   选择创建堆栈。
   选择Amazon S3 URL，其中Amazon S3 URL为：https://xiaoyj.s3.us-east-2.amazonaws.com/container-day/ecs.yml, 然后点击下一步。
-  输入BreakTheMonolith-Demo 作为堆栈名称。验证其他参数是否具有下列值：
+  输入BreakTheMonolith-Demo作为堆栈名称。验证其他参数是否具有下列值：
  所需容量 = 2 实例类型 = t2.micro 大小上限 = 2    选择下一步。
   在配置堆栈选项页面，保留默认选项，向下滚动并选择下一步。
-  在审查 BreakTheMonolith-Demo 页面上向下滚动到页面底部，选中复选框确认功能声明，并选择创建堆栈。
-  您将看到状态为 CREATE_IN_PROGRESS 的堆栈。您可以选择屏幕右上角的“刷新”按钮查看进度。此过程通常需要不到 5 分钟的时间。</description>
+  在审查 BreakTheMonolith-Demo 页面上向下滚动到页面底部，选中复选框确认功能声明，并选择创建堆栈。   您将看到状态为 CREATE_IN_PROGRESS 的堆栈。您可以选择屏幕右上角的“刷新”按钮查看进度。此过程通常需要不到 5 分钟的时间。</description>
     </item>
     
     <item>
@@ -128,7 +127,7 @@ Amazon ECS 无需额外付费。您只需为您创建的用于存储和运行应
   导航到 Amazon ECS 控制台，然后从左侧菜单栏中选择集群。
   选中集群 BreakTheMonolith-Demo，选择服务选项卡，然后选择创建。
   在配置服务页面上，编辑以下参数（并保留下面未列出参数的默认值）：
- 对于启动类型，选择 EC2。 对于服务名称，输入 api。 对于任务数量，输入 1。 选择下一步。    在配置网络页面上的负载均衡部分，选择Application Load Balancer。
+ 对于启动类型，选择 EC2。 对于服务名称，输入 api 对于任务数量，输入 1 选择下一步。    在配置网络页面上的负载均衡部分，选择Application Load Balancer。
 将会出现其他参数：服务 IAM 角色和负载均衡器名称。
  对于服务 IAM 角色，选择 BreakTheMonolith-Demo-ECSServiceRole。 对于负载均衡器名称，验证是否已选中 demo。    在将容器添加到负载均衡部分，选择添加到负载均衡器。 系统将显示标记为 api:3000 的其他信息。
   在api:3000部分，进行以下操作：

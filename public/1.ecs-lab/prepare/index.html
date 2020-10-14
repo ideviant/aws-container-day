@@ -18,21 +18,21 @@
     <title>准备实验环境 :: AWS Container Workshop</title>
 
     
-    <link href="../../css/nucleus.css?1602582194" rel="stylesheet">
-    <link href="../../css/fontawesome-all.min.css?1602582194" rel="stylesheet">
-    <link href="../../css/hybrid.css?1602582194" rel="stylesheet">
-    <link href="../../css/featherlight.min.css?1602582194" rel="stylesheet">
-    <link href="../../css/perfect-scrollbar.min.css?1602582194" rel="stylesheet">
-    <link href="../../css/auto-complete.css?1602582194" rel="stylesheet">
-    <link href="../../css/theme.css?1602582194" rel="stylesheet">
-    <link href="../../css/hugo-theme.css?1602582194" rel="stylesheet">
-    <link href="../../css/jquery-ui.min.css?1602582194" rel="stylesheet">
+    <link href="../../css/nucleus.css?1602670595" rel="stylesheet">
+    <link href="../../css/fontawesome-all.min.css?1602670595" rel="stylesheet">
+    <link href="../../css/hybrid.css?1602670595" rel="stylesheet">
+    <link href="../../css/featherlight.min.css?1602670595" rel="stylesheet">
+    <link href="../../css/perfect-scrollbar.min.css?1602670595" rel="stylesheet">
+    <link href="../../css/auto-complete.css?1602670595" rel="stylesheet">
+    <link href="../../css/theme.css?1602670595" rel="stylesheet">
+    <link href="../../css/hugo-theme.css?1602670595" rel="stylesheet">
+    <link href="../../css/jquery-ui.min.css?1602670595" rel="stylesheet">
     
-      <link href="../../css/theme-mine.css?1602582194" rel="stylesheet">
+      <link href="../../css/theme-mine.css?1602670595" rel="stylesheet">
     
 
-    <script src="../../js/jquery-3.3.1.min.js?1602582194"></script>
-    <script src="../../js/jquery-ui-1.12.1.min.js?1602582194"></script>
+    <script src="../../js/jquery-3.3.1.min.js?1602670595"></script>
+    <script src="../../js/jquery-ui-1.12.1.min.js?1602670595"></script>
 
 
     <style type="text/css">
@@ -60,14 +60,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="../../js/lunr.min.js?1602582194"></script>
-<script type="text/javascript" src="../../js/auto-complete.js?1602582194"></script>
+<script type="text/javascript" src="../../js/lunr.min.js?1602670595"></script>
+<script type="text/javascript" src="../../js/auto-complete.js?1602670595"></script>
 <script type="text/javascript">
     
         var baseurl = "http:\/\/gotoaws.cloudguru.run\/";
     
 </script>
-<script type="text/javascript" src="../../js/search.js?1602582194"></script>
+<script type="text/javascript" src="../../js/search.js?1602670595"></script>
 
     
   </div>
@@ -537,7 +537,7 @@
 <ul>
 <li>请新开一个页面,进入<a href="https://console.aws.amazon.com/iam/home#/roles">https://console.aws.amazon.com/iam/home#/roles</a>,选择创建角色 第一步选择 AWS service 并选择 EC2,点击下一步</li>
 <li>权限中选择 AdministratorAccess,点击下一步</li>
-<li>输入角色名字 container-admin,点击创建角色</li>
+<li>输入角色名字 <code>container-admin</code>,点击创建角色</li>
 <li>在EC2 Instances界面选择cloud9的EC2实例(名字为aws-cloud9-xxxxx),点击Actions/Instance Settings/Attach/Replace IAM Role,选择 container-admin 角色,点击Apply完成</li>
 <li>关闭cloud9临时权限，并验证角色是否生效.
 <img src="../../images/cloud9.png" alt=""></li>
@@ -568,9 +568,9 @@ aws sts get-caller-identity
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cd ~/environment/amazon-ecs-nodejs-microservices/2-containerized/services/api
 </code></pre></div><p>使用终端验证 Docker 登录：</p>
 <ul>
-<li>运行 <code>aws ecr get-login --no-include-email --region [your-region]</code>。替换 [your-region]，例如：$(aws ecr get-login &ndash;no-include-email &ndash;region us-east-1)。 如果需要，请配置您的凭证。
+<li>运行 <code>$(aws ecr get-login --no-include-email --region [your-region])</code>。替换 [your-region]，例如：$(aws ecr get-login &ndash;no-include-email &ndash;region us-east-1)。 如果需要，请配置您的凭证。
 如果身份验证成功，您将收到确认消息：登录成功。</li>
-<li>要构建镜像，请在终端中运行以下命令：<code>docker build -t api</code> .
+<li>要构建镜像，请在终端中运行以下命令：<code>docker build -t api .</code>
 ⚐ 注意：api 后需要添加句点 (.)。</li>
 <li>构建完毕后，请标记镜像，以便将其推送到以下存储库：<code>docker tag api:latest [account-ID].dkr.ecr.[region].amazonaws.com/api:v1</code>
 ⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。
@@ -895,19 +895,19 @@ aws sts get-caller-identity
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="../../js/clipboard.min.js?1602582194"></script>
-    <script src="../../js/perfect-scrollbar.min.js?1602582194"></script>
-    <script src="../../js/perfect-scrollbar.jquery.min.js?1602582194"></script>
-    <script src="../../js/jquery.sticky.js?1602582194"></script>
-    <script src="../../js/featherlight.min.js?1602582194"></script>
-    <script src="../../js/highlight.pack.js?1602582194"></script>
+    <script src="../../js/clipboard.min.js?1602670595"></script>
+    <script src="../../js/perfect-scrollbar.min.js?1602670595"></script>
+    <script src="../../js/perfect-scrollbar.jquery.min.js?1602670595"></script>
+    <script src="../../js/jquery.sticky.js?1602670595"></script>
+    <script src="../../js/featherlight.min.js?1602670595"></script>
+    <script src="../../js/highlight.pack.js?1602670595"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="../../js/modernizr.custom-3.6.0.js?1602582194"></script>
-    <script src="../../js/learn.js?1602582194"></script>
-    <script src="../../js/hugo-learn.js?1602582194"></script>
+    <script src="../../js/modernizr.custom-3.6.0.js?1602670595"></script>
+    <script src="../../js/learn.js?1602670595"></script>
+    <script src="../../js/hugo-learn.js?1602670595"></script>
 
-    <link href="../../mermaid/mermaid.css?1602582194" type="text/css" rel="stylesheet" />
-    <script src="../../mermaid/mermaid.min.js?1602582194"></script>
+    <link href="../../mermaid/mermaid.css?1602670595" type="text/css" rel="stylesheet" />
+    <script src="../../mermaid/mermaid.min.js?1602670595"></script>
     <script>
 	var config = {
         startOnLoad:true,

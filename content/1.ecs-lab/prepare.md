@@ -19,7 +19,7 @@ AWS Cloud9 为您提供了EC2基础设施资源并且一个可视化的编辑器
 Cloud9 通常使用动态生成 IAM 的认证授权信息，但目前和 EKS IAM Authentication 不兼容，因此我们直接给 Cloud 9 EC2 实例附加一个管理员权限的 IAM 角色，并禁止掉 Cloud9 默认的动态 IAM认证授权信息：
 - 请新开一个页面,进入[https://console.aws.amazon.com/iam/home#/roles](https://console.aws.amazon.com/iam/home#/roles),选择创建角色 第一步选择 AWS service 并选择 EC2,点击下一步
 - 权限中选择 AdministratorAccess,点击下一步
-- 输入角色名字 container-admin,点击创建角色
+- 输入角色名字 `container-admin`,点击创建角色
 - 在EC2 Instances界面选择cloud9的EC2实例(名字为aws-cloud9-xxxxx),点击Actions/Instance Settings/Attach/Replace IAM Role,选择 container-admin 角色,点击Apply完成
 - 关闭cloud9临时权限，并验证角色是否生效.
 ![](/images/cloud9.png)
@@ -70,9 +70,9 @@ cd ~/environment/amazon-ecs-nodejs-microservices/2-containerized/services/api
 
 使用终端验证 Docker 登录：
 
-- 运行 `aws ecr get-login --no-include-email --region [your-region]`。替换 [your-region]，例如：$(aws ecr get-login --no-include-email --region us-east-1)。 如果需要，请配置您的凭证。
+- 运行 `$(aws ecr get-login --no-include-email --region [your-region])`。替换 [your-region]，例如：$(aws ecr get-login --no-include-email --region us-east-1)。 如果需要，请配置您的凭证。
 如果身份验证成功，您将收到确认消息：登录成功。
-- 要构建镜像，请在终端中运行以下命令：`docker build -t api` .
+- 要构建镜像，请在终端中运行以下命令：`docker build -t api .`
 ⚐ 注意：api 后需要添加句点 (.)。
 - 构建完毕后，请标记镜像，以便将其推送到以下存储库：`docker tag api:latest [account-ID].dkr.ecr.[region].amazonaws.com/api:v1`
 ⚐ 注意：将 [account-ID] 和 [region] 占位符替换为您的特定信息。
