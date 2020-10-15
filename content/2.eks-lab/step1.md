@@ -7,6 +7,9 @@ weight: 21
 我们将在之前创建的AWS Cloud9 环境里面安装eksctl,kubectl。进入Cloud9编辑器环境后，在终端中输入以下命令,进行安装。
 
 ```bash
+# 进入环境目录
+cd ~/environment/
+
 #设置默认region
 export AWS_DEFAULT_REGION=us-east-1
 echo "export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" >> ~/.bashrc
